@@ -15,16 +15,6 @@ describe ("Employee", () => {
         expect(employee.id).toBe(id);
         expect(employee.email).toBe(email);
     });
-    // it("should set id for employee", () => {
-       
-    //     const employee = new Employee("Foo", id);
-    //     expect(employee.id).toBe(id);
-    // });
-    // it("should set email for employee", () => {
-        
-    //     const employee = new Employee(email);
-    //     expect(employee.email).toBe(email);
-    // })
     describe ("getName", () => {
         it("should return a string with the first letter capitalized", () => {
             const name = "Ben";
@@ -39,20 +29,27 @@ describe ("Employee", () => {
     });
     describe ("getId", () => {
         it("should return a string with a number in it", () => {
-            expect(new Employee.getId("1")).toBeInstanceOf(number);
+            const id = "1";
+            const employee = new Employee("Foo", id);
+            expect(employee.getId(id)).toBe("1");
         });
         it("incorrect input returns error message", () => {
-            expect(new Employee.getId("a")).toBe("Make sure type in number");
+            const id = "a";
+            const employee = new Employee("Foo", id);
+            expect(employee.getId(id)).toBe("Make sure type in number");
         }); 
     })
     describe("getEmail", () => {
         it("should return an email", () => {
-            expect(new Employee.getEmail("stteps@yahoo.com")).toBe("stteps@yahoo.com");
+            const email = "stteps@yahoo.com";
+            const employee = new Employee("Foo", 1, email);
+            expect(employee.getEmail()).toBe(email);
         });
     });
     describe("getRole", () => {
         it("Should return Employee", () => {
-            expect(new Employee.getRole()).toBe("Employee");
+            const employee = new Employee();
+            expect(employee.getRole()).toBe("Employee");
         });
     });
 });
