@@ -7,30 +7,32 @@ const inquirer = require("inquirer");
 
 const teamMembersArray = [];
 
-const managerQuestions = [
+const managerInfo = [
     {
         type: "input",
         message: "What is the Manger's name?",
-        name: "managerName"
+        name: "managerName",
+        validate: val => val.charAt(0) === val.charAt(0).toUpperCase() ? true : `Must begin with a capital letter` 
     },
     {
         type: "input",
         message: "What is the Manager's ID number?",
         name: "managerID",
-        validate: val => /[1-9]/i.test(val)
+        validate: val => /[1-9]/i.test(val) ? true : `Must be a number`
     },
     {
         type: "input",
         message: "What is the Manager's email?",
-        name: "managerEmail"
+        name: "managerEmail",
+        validate: val => /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(val) ? true : `Must be a valid email`
     },
     {
         type: "input",
         message: "What is the Manager's office number?",
         name: "managerOffNum",
-        validate: val => /[a-z1-9]/gi.test(val)
+        validate: val => /[a-z1-9]/gi.test(val) ? true: `Must include only letter(s) and number(s)`
     }
-]);
+];
         // .then((response) => {
         //     fs.writeFile("./src/Manager.html", `
         //     <div class="card">
@@ -61,18 +63,20 @@ const engineerInfo = [
     {
         type: "input",
         message: "What is the Engineer's Name?",
-        name: "engineerName"
+        name: "engineerName",
+        validate: val => val.charAt(0) === val.charAt(0).toUpperCase() ? true : `Must begin with a capital letter` 
     },
     {
         type: "input",
         message: "What is the Engineer's ID?",
         name: "engineerId",
-        validate: val => /[1-9]/.ignoreCase.test(val)
+        validate: val => /[1-9]/.i.test(val) ? true : `Must be a number`
     },
     {
         type: "input",
         message: "What is the Engineer's email?",
-        name: "engineerEmail"
+        name: "engineerEmail",
+        validate: val => /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(val) ? true : `Must be a valid email`
     },
     {
         type: "input",
@@ -85,18 +89,20 @@ const internInfo = [
     {
         type: "input",
         message: "What is the Intern's Name?",
-        name: "internName"
+        name: "internName",
+        validate: val => val.charAt(0) === val.charAt(0).toUpperCase() ? true : `Must begin with a capital letter` 
     },
     {
         type: "input",
         message: "What is the Intern's ID?",
         name: "internId",
-        validate: val => /[1-9]/.ignoreCase.test(val)
+        validate: val => /[1-9]/.i.test(val) ? true : `Must be a number`
     },
     {
         type: "input",
         message: "What is the Intern's email?",
-        name: "internEmail"
+        name: "internEmail",
+        validate: val => /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(val) ? true : `Must be a valid email`
     },
     {
         type: "input",
@@ -107,7 +113,7 @@ const internInfo = [
 
 function intro() {
     inquirer    
-        .prompt(managerQuestions)
+        .prompt(managerInfo)
         .then((response) => {
             let manager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOffNum);
             teamMembersArray.push(manager);
@@ -142,6 +148,7 @@ function whatNext() {
 };
 
 function createTeam() {
+
 
 }
 
