@@ -18,19 +18,19 @@ const managerInfo = [
         type: "input",
         message: "What is the Manager's ID number?",
         name: "managerID",
-        validate: val => /[1-9]/i.test(val) ? true : `Must be a number`
+        validate: val => /[0-9]/i.test(val) ? true : `Must be a number`
     },
     {
         type: "input",
         message: "What is the Manager's email?",
         name: "managerEmail",
-        validate: val => /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(val) ? true : `Must be a valid email`
+        validate: val => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val) ? true : `Must be a valid email`
     },
     {
         type: "input",
         message: "What is the Manager's office number?",
         name: "managerOffNum",
-        validate: val => /[a-z1-9]/gi.test(val) ? true: `Must include only letter(s) and number(s)`
+        validate: val => /[a-z0-9]/gi.test(val) ? true: `Must include only letter(s) and number(s)`
     }
 ];
         // .then((response) => {
@@ -70,13 +70,13 @@ const engineerInfo = [
         type: "input",
         message: "What is the Engineer's ID?",
         name: "engineerId",
-        validate: val => /[1-9]/.i.test(val) ? true : `Must be a number`
+        validate: val => /[0-9]/i.test(val) ? true : `Must be a number`
     },
     {
         type: "input",
         message: "What is the Engineer's email?",
         name: "engineerEmail",
-        validate: val => /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(val) ? true : `Must be a valid email`
+        validate: val => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val) ? true : `Must be a valid email`
     },
     {
         type: "input",
@@ -96,18 +96,19 @@ const internInfo = [
         type: "input",
         message: "What is the Intern's ID?",
         name: "internId",
-        validate: val => /[1-9]/.i.test(val) ? true : `Must be a number`
+        validate: val => /[0-9]/i.test(val) ? true : `Must be a number`
     },
     {
         type: "input",
         message: "What is the Intern's email?",
         name: "internEmail",
-        validate: val => /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(val) ? true : `Must be a valid email`
+        validate: val => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val) ? true : `Must be a valid email`
     },
     {
         type: "input",
         message: "What school does the Intern attend?",
-        name: "internSchool"
+        name: "internSchool",
+        validate: val => val.charAt(0) === val.charAt(0).toUpperCase() ? true : `Must begin with a capital letter`
     }
 ];
 
@@ -125,7 +126,7 @@ function whatNext() {
     inquirer   
         .prompt(nextStep)
         .then((response) => {
-            if(response === "Add an Engineer") {
+            if(response.choices === "Add an Engineer") {
                 inquirer
                     .prompt(engineerInfo)
                     .then((response) => {
@@ -134,7 +135,7 @@ function whatNext() {
                         whatNext();
                     })
             }
-            if(response === "Add an Intern") {
+            if(response.choices === "Add an Intern") {
                 inquirer
                     .prompt(internInfo)
                     .then((response) => {
