@@ -17,7 +17,7 @@ const managerInfo = [
     {
         type: "input",
         message: "What is the Manager's ID number?",
-        name: "managerID",
+        name: "managerId",
         validate: val => /[0-9]/i.test(val) ? true : `Must be a number`
     },
     {
@@ -54,8 +54,8 @@ const managerInfo = [
 
 const nextStep = {
     type: "list",
-    message: "What would you like to do next?",
-    choices: ["Add an Engineer", "Add an Intern", "Finish building my team"],
+    message: "Would you like to add another team member or finish building?",
+    choices: ["Engineer", "Intern", "Finish building my team"],
     name: "choices"
 };
 
@@ -116,8 +116,32 @@ function intro() {
     inquirer    
         .prompt(managerInfo)
         .then((response) => {
-            let manager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOffNum);
-            teamMembersArray.push(manager);
+            fs.writeFile("./src/Manager.html", `
+                <div class="card">
+                    <div class="cardHeader bg-primary">
+                        <h2 class="cardTitle">${ response.managerName }</h2>
+                        <h3 class="cardTitle"><i class="fas fa-mug-hot"></i>Manager</h3>
+                    </div>
+                    <div class="cardBody bg-muted">
+                        <ul class="list">
+                            <li class="listItem">ID: ${ response.managerId }</li>
+                            <li class="listItem">Email: ${ response.managerEmail }<a href="mailto:${ response.managerEmail }"></a></li>
+                            <li class="listItem">Office number: ${ response.managerOffNum }</li>
+                        </ul>
+                    </div>
+                </div>
+            `, (err) =>
+                err ? console.log(err) : console.log("Successfully written!")
+            );
+            fs.readFile("./src/Manager.html", "utf8", function (err, data) {
+                if (err) {
+                    console.log(err)
+                }
+                teamMembersArray.push(data.toString());
+                console.log(teamMembersArray);
+            });
+            
+            // arrayManager();
             whatNext();
         })
 };
@@ -126,21 +150,65 @@ function whatNext() {
     inquirer   
         .prompt(nextStep)
         .then((response) => {
-            if(response.choices === "Add an Engineer") {
+            if(response.choices === "Engineer") {
                 inquirer
                     .prompt(engineerInfo)
                     .then((response) => {
-                        let engineer = (response.engineerName, response.engineerId, response.engineerEmail, response.engineerGithub);
-                        teamMembersArray.push(engineer);
+                        fs.writeFile("./src/Engineer.html", `
+                <div class="card">
+                    <div class="cardHeader bg-primary">
+                        <h2 class="cardTitle">${ response.engineerName }</h2>
+                        <h3 class="cardTitle"><i class="fas fa-glasses"></i>Engineer</h3>
+                    </div>
+                    <div class="cardBody bg-muted">
+                        <ul class="list">
+                            <li class="listItem">ID: ${ response.engineerId }</li>
+                            <li class="listItem">Email: ${ response.engineerEmail }<a href="mailto:${ response.engineerEmail }"></a></li>
+                            <li class="listItem">GitHub: ${ response.engineerGithub }<a href="https://github.com/${ response.engineerGithub }"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                        `, (err) =>
+                            err ? console.log(err) : console.log("Successfully written!")
+                        )
+                        fs.readFile("./src/Engineer.html", "utf8", function (err, data) {
+                            if (err) {
+                                console.log(err)
+                            }
+                            teamMembersArray.push(data.toString());
+                            console.log(teamMembersArray);
+                        });
                         whatNext();
                     })
             }
-            if(response.choices === "Add an Intern") {
+            if(response.choices === "Intern") {
                 inquirer
                     .prompt(internInfo)
                     .then((response) => {
-                        let intern = (response.internName, response.internId, response.internEmail, response.internGithub);
-                        teamMembersArray.push(intern);
+                        fs.writeFile("./src/Intern.html", `
+                <div class="card">
+                    <div class="cardHeader bg-primary">
+                        <h2 class="cardTitle">${ response.internName }</h2>
+                        <h3 class="cardTitle"><i class="fas fa-user-graduate"></i>Intern</h3>
+                    </div>
+                    <div class="cardBody bg-muted">
+                        <ul class="list">
+                            <li class="listItem">ID: ${ response.internId }</li>
+                            <li class="listItem">Email: ${ response.internEmail }<a href="mailto:${ response.internEmail }"></a></li>
+                            <li class="listItem">School: ${ response.internSchool }</li>
+                        </ul>
+                    </div>
+                </div>
+                        `, (err) =>
+                            err ? console.log(err) : console.log("Successfully written!")
+                        )
+                        fs.readFile("./src/Intern.html", "utf8", function (err, data) {
+                            if (err) {
+                                console.log(err)
+                            }
+                            teamMembersArray.push(data.toString());
+                            console.log(teamMembersArray);
+                        });
                         whatNext();
                     })
             }
@@ -149,8 +217,43 @@ function whatNext() {
 };
 
 function createTeam() {
-
-
+    fs.writeFile("./dist/index.html", `
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../dist/style.css"/>
+    <title>Team Profile</title>
+</head>
+    
+<body>
+    
+    <div class="containerFluid">
+        <div class="row">
+            <div class="col-12 jumbotron bg-danger text-light text-center">
+                <h1>My Team</h1>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="team col-12 d-flex flex-wrap justify-content-center">
+                ${ teamMembersArray.join("") }
+            </div>
+        </div>
+    </div>
+    
+</body>
+    
+</html>
+    `, (err) => {
+        err ? console.log(err) : console.log("Created HTML Successfully!")
+    });
 }
 
 intro();
