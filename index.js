@@ -12,7 +12,7 @@ const managerInfo = [
         type: "input",
         message: "What is the Manger's name?",
         name: "managerName",
-        validate: val => val.charAt(0) === val.charAt(0).toUpperCase() ? true : `Must begin with a capital letter` 
+        validate: val => val.charAt(0) === val.charAt(0).toUpperCase() ? true : `Must begin with a capital letter`
     },
     {
         type: "input",
@@ -30,27 +30,10 @@ const managerInfo = [
         type: "input",
         message: "What is the Manager's office number?",
         name: "managerOffNum",
-        validate: val => /[a-z0-9]/gi.test(val) ? true: `Must include only letter(s) and number(s)`
+        validate: val => /[a-z0-9]/gi.test(val) ? true : `Must include only letter(s) and number(s)`
     }
 ];
-        // .then((response) => {
-        //     fs.writeFile("./src/Manager.html", `
-        //     <div class="card">
-        //         <div class="cardHeader bg-primary">
-        //             <h2 class="cardTitle">${ response.managerName }</h2>
-        //             <h3 class="cardTitle"><i class="fas fa-mug-hot"></i>Manager</h3>
-        //         </div>
-        //         <div class="cardBody bg-muted">
-        //             <ul class="list">
-        //                 <li class="listItem">ID: ${ response.managerId }</li>
-        //                 <li class="listItem">Email: ${ response.managerEmail }<a href="mailto:"></a></li>
-        //                 <li class="listItem">Office number: ${ response.managerOffNum }</li>
-        //             </ul>
-        //         </div>
-        //     </div>
-        //     `, (err) => error? console.log(err) : console.log("Manager created"))
-        // })
-// };
+
 
 const nextStep = {
     type: "list",
@@ -64,7 +47,7 @@ const engineerInfo = [
         type: "input",
         message: "What is the Engineer's Name?",
         name: "engineerName",
-        validate: val => val.charAt(0) === val.charAt(0).toUpperCase() ? true : `Must begin with a capital letter` 
+        validate: val => val.charAt(0) === val.charAt(0).toUpperCase() ? true : `Must begin with a capital letter`
     },
     {
         type: "input",
@@ -90,7 +73,7 @@ const internInfo = [
         type: "input",
         message: "What is the Intern's Name?",
         name: "internName",
-        validate: val => val.charAt(0) === val.charAt(0).toUpperCase() ? true : `Must begin with a capital letter` 
+        validate: val => val.charAt(0) === val.charAt(0).toUpperCase() ? true : `Must begin with a capital letter`
     },
     {
         type: "input",
@@ -112,107 +95,99 @@ const internInfo = [
     }
 ];
 
-function intro() {
-    inquirer    
-        .prompt(managerInfo)
-        .then((response) => {
-            fs.writeFile("./src/Manager.html", `
-                <div class="card">
-                    <div class="cardHeader bg-primary">
-                        <h2 class="cardTitle">${ response.managerName }</h2>
-                        <h3 class="cardTitle"><i class="fas fa-mug-hot"></i>Manager</h3>
+function createManagerCard(manager) {
+    return `
+                <div class="card m-3">
+                    <div class="cardHeader bg-primary text-light">
+                        <h2 class="cardTitle">${manager.getName()}</h2>
+                        <h3 class="cardTitle"><i class="fas fa-mug-hot"></i>${manager.getRole()}</h3>
                     </div>
                     <div class="cardBody bg-muted">
                         <ul class="list">
-                            <li class="listItem">ID: ${ response.managerId }</li>
-                            <li class="listItem">Email: ${ response.managerEmail }<a href="mailto:${ response.managerEmail }"></a></li>
-                            <li class="listItem">Office number: ${ response.managerOffNum }</li>
+                            <li class="listItem">ID: ${manager.getId()}</li>
+                            <li class="listItem">Email: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></li>
+                            <li class="listItem">Office number: ${manager.getOfficeNumber()}</li>
                         </ul>
                     </div>
                 </div>
-            `, (err) =>
-                err ? console.log(err) : console.log("Successfully written!")
-            );
-            fs.readFile("./src/Manager.html", "utf8", function (err, data) {
-                if (err) {
-                    console.log(err)
-                }
-                teamMembersArray.push(data.toString());
+    `
+};
+
+function intro() {
+    inquirer
+        .prompt(managerInfo)
+        .then((response) => {
+            const manager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOffNum);
+            const managerCard = createManagerCard(manager);
+                teamMembersArray.push(managerCard);
                 console.log(teamMembersArray);
-            });
-            
-            // arrayManager();
-            whatNext();
-        })
+                whatNext();
+        });
+};
+
+function createEngineerCards(engineer) {
+    return `
+                <div class="card m-3">
+                    <div class="cardHeader bg-primary text-light">
+                        <h2 class="cardTitle">${engineer.getName()}</h2>
+                        <h3 class="cardTitle"><i class="fas fa-glasses"></i>${ engineer.getRole() }</h3>
+                    </div>
+                    <div class="cardBody bg-muted">
+                        <ul class="list">
+                            <li class="listItem">ID: ${engineer.getId()}</li>
+                            <li class="listItem">Email: <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></li>
+                            <li class="listItem">GitHub: <a href="https://github.com/${engineer.getGithub()}">${engineer.getGithub()}</a></li>
+                        </ul>
+                    </div>
+                </div> 
+    `
+};
+
+function createInternCards(intern) {
+    return `
+                <div class="card m-3">
+                    <div class="cardHeader bg-primary text-light">
+                        <h2 class="cardTitle">${intern.getName()}</h2>
+                        <h3 class="cardTitle"><i class="fas fa-glasses"></i>${ intern.getRole() }</h3>
+                    </div>
+                    <div class="cardBody bg-muted">
+                        <ul class="list">
+                            <li class="listItem">ID: ${intern.getId()}</li>
+                            <li class="listItem">Email: <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a></li>
+                            <li class="listItem">School: ${intern.getSchool()}</li>
+                        </ul>
+                    </div>
+                </div> 
+    `
 };
 
 function whatNext() {
-    inquirer   
+    inquirer
         .prompt(nextStep)
         .then((response) => {
-            if(response.choices === "Engineer") {
+            if (response.choices === "Engineer") {
                 inquirer
                     .prompt(engineerInfo)
                     .then((response) => {
-                        fs.writeFile("./src/Engineer.html", `
-                <div class="card">
-                    <div class="cardHeader bg-primary">
-                        <h2 class="cardTitle">${ response.engineerName }</h2>
-                        <h3 class="cardTitle"><i class="fas fa-glasses"></i>Engineer</h3>
-                    </div>
-                    <div class="cardBody bg-muted">
-                        <ul class="list">
-                            <li class="listItem">ID: ${ response.engineerId }</li>
-                            <li class="listItem">Email: ${ response.engineerEmail }<a href="mailto:${ response.engineerEmail }"></a></li>
-                            <li class="listItem">GitHub: ${ response.engineerGithub }<a href="https://github.com/${ response.engineerGithub }"></a></li>
-                        </ul>
-                    </div>
-                </div>
-                        `, (err) =>
-                            err ? console.log(err) : console.log("Successfully written!")
-                        )
-                        fs.readFile("./src/Engineer.html", "utf8", function (err, data) {
-                            if (err) {
-                                console.log(err)
-                            }
-                            teamMembersArray.push(data.toString());
-                            console.log(teamMembersArray);
-                        });
+                        const engineer = new Engineer(response.engineerName, response.engineerId, response.engineerEmail, response.engineerGithub);
+                        const engineerCard = createEngineerCards(engineer);
+                        teamMembersArray.push(engineerCard);
                         whatNext();
-                    })
+                    });
             }
-            if(response.choices === "Intern") {
+            if (response.choices === "Intern") {
                 inquirer
                     .prompt(internInfo)
                     .then((response) => {
-                        fs.writeFile("./src/Intern.html", `
-                <div class="card">
-                    <div class="cardHeader bg-primary">
-                        <h2 class="cardTitle">${ response.internName }</h2>
-                        <h3 class="cardTitle"><i class="fas fa-user-graduate"></i>Intern</h3>
-                    </div>
-                    <div class="cardBody bg-muted">
-                        <ul class="list">
-                            <li class="listItem">ID: ${ response.internId }</li>
-                            <li class="listItem">Email: ${ response.internEmail }<a href="mailto:${ response.internEmail }"></a></li>
-                            <li class="listItem">School: ${ response.internSchool }</li>
-                        </ul>
-                    </div>
-                </div>
-                        `, (err) =>
-                            err ? console.log(err) : console.log("Successfully written!")
-                        )
-                        fs.readFile("./src/Intern.html", "utf8", function (err, data) {
-                            if (err) {
-                                console.log(err)
-                            }
-                            teamMembersArray.push(data.toString());
-                            console.log(teamMembersArray);
-                        });
+                        const intern = new Intern(response.internName, response.internId, response.internEmail, response.internSchool);
+                        const internCard = createInternCards(intern);
+                        teamMembersArray.push(internCard);
                         whatNext();
-                    })
+                    });
             }
-            createTeam(teamMembersArray);
+            if (response.choices === "Finish building my team") {
+                createTeam(teamMembersArray);
+            }
         })
 };
 
@@ -243,7 +218,7 @@ function createTeam() {
     <div class="container">
         <div class="row">
             <div class="team col-12 d-flex flex-wrap justify-content-center">
-                ${ teamMembersArray.join("") }
+                ${teamMembersArray.join("")}
             </div>
         </div>
     </div>
