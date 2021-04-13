@@ -1,6 +1,7 @@
-
+//requires exported information from sub class Manager
 const Manager = require("../lib/Manager");
 
+//checks that information entered into the Manager sub-class will result in the correct output
 describe("Manager", () => {
     it("should set office number for Manager", () => {
         const offNum = "1";

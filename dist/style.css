@@ -3,6 +3,7 @@
     box-sizing: border-box;
 }
 
+/* sets every elements in html to have base sizes */
 html {
     height: 100%;
     margin: 0;
@@ -10,6 +11,7 @@ html {
     font-size: 10px;
 }
 
+/* establishesfont size for headings */
 h1 {
     font-size: 4em;
 }
@@ -22,17 +24,27 @@ h3 {
     font-size: 3em;
 }
 
+/* styles and targets each card's elements */
+.cardsCreated {
+    margin-top: 6rem;
+}
+
 .card {
     box-shadow: 2px 2px 9px 1px black;
+    margin: 3rem 1rem;
 }
 
 .cardHeader {
     padding: 18px;
 }
 
+.cardTitle {
+    margin-bottom: 1rem;
+}
+
 .list {
     margin: 0;
-    padding: 15px 20px;
+    padding: 50px 20px;
     list-style-type: none;
 }
 
@@ -42,7 +54,7 @@ h3 {
 .listItem {
     border: 1px solid #CED4DA;
     background: white;
-    padding: 2px;
-    margin: 1px;
+    padding: 15px;
+    margin: .5px;
     font-size: 1.6em;
 }

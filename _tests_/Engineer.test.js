@@ -1,6 +1,7 @@
-
+//requires exported information from sub class Engineer
 const Engineer = require("../lib/Engineer");
 
+//checks that information entered into the Engineer sub-class will result in the correct output
 describe ("Engineer", () => {
     it("should set github for Engineer", () => {
         const github = "cmcunningham27";

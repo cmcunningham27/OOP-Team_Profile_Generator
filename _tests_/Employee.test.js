@@ -1,6 +1,7 @@
-
+//requires exported information from super class Employee
 const Employee = require("../lib/Employee");
 
+//checks that information entered into the Employee super-class will result in the correct output
 describe ("Employee", () => {
     it("should create an instance of Employee", () => {
         const employee = new Employee();
@@ -16,15 +17,10 @@ describe ("Employee", () => {
         expect(employee.email).toBe(email);
     });
     describe ("getName", () => {
-        it("should return a string with the first letter capitalized", () => {
+        it("should return name", () => {
             const name = "Ben";
             const employee = new Employee(name);
             expect(employee.getName(name)).toBe("Ben");
-        });
-        it("input without capital returns error message", () => {
-            const name = "ben";
-            const employee = new Employee(name);
-            expect(employee.getName(name)).toBe("Make sure first letter is capitalized");
         });
     });
     describe ("getId", () => {
@@ -32,11 +28,6 @@ describe ("Employee", () => {
             const id = "1";
             const employee = new Employee("Foo", id);
             expect(employee.getId(id)).toBe("1");
-        });
-        it("incorrect input returns error message", () => {
-            const id = "a";
-            const employee = new Employee("Foo", id);
-            expect(employee.getId(id)).toBe("Make sure type in number");
         }); 
     })
     describe("getEmail", () => {

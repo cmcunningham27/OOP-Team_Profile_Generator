@@ -1,12 +1,14 @@
-const Employee = require("./lib/Employee");
+//Files that have needed information
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const fs = require("fs");
 const inquirer = require("inquirer");
 
+//Empty array for each employee created
 const teamMembersArray = [];
 
+//Initial questions that the user will be presented with
 const managerInfo = [
     {
         type: "input",
@@ -34,7 +36,7 @@ const managerInfo = [
     }
 ];
 
-
+//Choice after Manager is created
 const nextStep = {
     type: "list",
     message: "Would you like to add another team member or finish building?",
@@ -42,6 +44,7 @@ const nextStep = {
     name: "choices"
 };
 
+//Questions for the user if they chose to add an Engineer
 const engineerInfo = [
     {
         type: "input",
@@ -68,6 +71,7 @@ const engineerInfo = [
     }
 ];
 
+//Question for the user if they chose to add an Intern
 const internInfo = [
     {
         type: "input",
@@ -95,12 +99,13 @@ const internInfo = [
     }
 ];
 
+//Function that creates the manager's card information
 function createManagerCard(manager) {
     return `
-                <div class="card m-3">
+                <div class="card">
                     <div class="cardHeader bg-primary text-light">
                         <h2 class="cardTitle">${manager.getName()}</h2>
-                        <h3 class="cardTitle"><i class="fas fa-mug-hot"></i>${manager.getRole()}</h3>
+                        <h3 class="cardTitle">${manager.getRole()}</h3>
                     </div>
                     <div class="cardBody bg-muted">
                         <ul class="list">
@@ -113,24 +118,25 @@ function createManagerCard(manager) {
     `
 };
 
+//Function that intiates the Manager questions, takes the responses and creates an instance of Manager, calles the createManagerCard function with the instance as the parameters, pushes the return string into the empty array and calls the whatNext function
 function intro() {
     inquirer
         .prompt(managerInfo)
         .then((response) => {
             const manager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOffNum);
             const managerCard = createManagerCard(manager);
-                teamMembersArray.push(managerCard);
-                console.log(teamMembersArray);
-                whatNext();
+            teamMembersArray.push(managerCard);
+            whatNext();
         });
 };
 
+//Function that creates the engineer's card information
 function createEngineerCards(engineer) {
     return `
-                <div class="card m-3">
+                <div class="card">
                     <div class="cardHeader bg-primary text-light">
                         <h2 class="cardTitle">${engineer.getName()}</h2>
-                        <h3 class="cardTitle"><i class="fas fa-glasses"></i>${ engineer.getRole() }</h3>
+                        <h3 class="cardTitle">${ engineer.getRole() }</h3>
                     </div>
                     <div class="cardBody bg-muted">
                         <ul class="list">
@@ -143,12 +149,13 @@ function createEngineerCards(engineer) {
     `
 };
 
+//Function that creates the intern's card information
 function createInternCards(intern) {
     return `
-                <div class="card m-3">
+                <div class="card">
                     <div class="cardHeader bg-primary text-light">
                         <h2 class="cardTitle">${intern.getName()}</h2>
-                        <h3 class="cardTitle"><i class="fas fa-glasses"></i>${ intern.getRole() }</h3>
+                        <h3 class="cardTitle">${ intern.getRole() }</h3>
                     </div>
                     <div class="cardBody bg-muted">
                         <ul class="list">
@@ -161,6 +168,7 @@ function createInternCards(intern) {
     `
 };
 
+//Function that takes the nextStep choice by the user and runs either the inquirer for Engineer or Intern by intiating the  questions, takes the responses and creates an instance of Engineer or Intern, calles the createEngineerCards or createInternCards function with the instance as the parameters, pushes the return string into the empty array and calls the whatNext function, or calls the createTeam function with the teamMembersArray as the parameters
 function whatNext() {
     inquirer
         .prompt(nextStep)
@@ -191,6 +199,7 @@ function whatNext() {
         })
 };
 
+//Function that takes the teamMembersArray and inserts it into the final html using .join, and creates the official rendered output HTML
 function createTeam() {
     fs.writeFile("./dist/index.html", `
 <!DOCTYPE html>
@@ -217,7 +226,7 @@ function createTeam() {
     
     <div class="container">
         <div class="row">
-            <div class="team col-12 d-flex flex-wrap justify-content-center">
+            <div class="cardsCreated team col-12 d-flex flex-wrap justify-content-center">
                 ${teamMembersArray.join("")}
             </div>
         </div>
@@ -231,4 +240,5 @@ function createTeam() {
     });
 }
 
+//calls the intro function to begin the app
 intro();
