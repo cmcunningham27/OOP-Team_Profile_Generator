@@ -13,7 +13,6 @@ My motivation for this project was to create an app that asks the User questions
 - [License](#license)
 - [Complications](#complications)
 - [Features](#features)
-- [Contribute](#contribute)
 - [Tests](#tests)
 - [Questions](#questions)
 ## Installation
@@ -40,6 +39,9 @@ Figuring out where to place each of the whatNext function calls was another comp
 ## Features
 ---
 For larger teams, create folders that the cards can be rendered into (i.e. Engineer folder, Intern folder).
+## Tests
+---
+To run the tests for the classes in the lib folder, open the command line and enter "npm run test." Here you will find that all 15 tests have passed. To see the tests, go into the "_tests_" folder to find all 4 files associated with all 4 class files.
 ## Questions
 ---
 [GitHub Profile](https://github.com/cmcunningham27)
